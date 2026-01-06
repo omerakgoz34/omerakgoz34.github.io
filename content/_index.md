@@ -1,4 +1,4 @@
 ---
 title: "Home"
-weight: 3
+weight: 1
 ---

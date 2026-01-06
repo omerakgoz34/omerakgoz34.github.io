@@ -1,7 +1,7 @@
 ---
 title: "snake"
-date: "2025-12-30"
-externalURL: "/snake.html"
+date: "2025-12-31"
+externalURL: "{{ relURL "snake.html" }}"
 tags:
 - test
 ---

@@ -29,13 +29,13 @@ module:
 menu:
   main:
     - name: "Home"
-      url: "./"
+      url: "/"
       weight: 1
     - name: "Tags"
-      url: "./tags"
+      url: "/tags"
       weight: 2
     - name: "About"
-      url: "./about"
+      url: "/about"
       weight: 3
 
 params:
