@@ -5,4 +5,4 @@ externalURL: "/gear-animejs-gemini.html"
 tags:
 - test
 ---
-{{< redirect target={{externalURL}} >}}
+{{< redirect >}}

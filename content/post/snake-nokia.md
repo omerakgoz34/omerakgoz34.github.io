@@ -5,4 +5,4 @@ externalURL: "/snake-nokia.html"
 tags:
 - test
 ---
-{{< redirect target={{externalURL}} >}}
+{{< redirect >}}

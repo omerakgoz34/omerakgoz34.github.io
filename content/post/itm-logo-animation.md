@@ -5,4 +5,4 @@ externalURL: "/itm-logo-animation.html"
 tags:
 - test
 ---
-{{< redirect target={{externalURL}} >}}
+{{< redirect >}}
