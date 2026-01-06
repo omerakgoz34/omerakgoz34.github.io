@@ -1,7 +1,7 @@
 ---
 title: "itm-logo-animation"
 date: "2025-12-31"
-externalURL: "{{ relURL "itm-logo-animation.html" }}"
+externalURL: "itm-logo-animation.html"
 tags:
 - test
 ---
