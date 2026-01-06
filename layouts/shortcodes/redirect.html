@@ -1,0 +1,4 @@
+{{ with resources.Get (.Get "target") }}
+  <script>window.location.href = "{{ .Permalink }}";</script>
+  <meta http-equiv="refresh" content="0; url={{ .Permalink }}">
+{{ end }}
