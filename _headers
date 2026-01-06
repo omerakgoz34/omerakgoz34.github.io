@@ -1,0 +1,18 @@
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;
+
+# Cache-Busting for Fingerprinted Assets (CSS/JS)
+/js/*.js
+  Cache-Control: public, max-age=31536000, immutable
+/css/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Freshness for HTML and RSS
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+/index.xml
+  Cache-Control: public, max-age=3600, must-revalidate
