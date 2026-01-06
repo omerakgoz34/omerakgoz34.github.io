@@ -1,6 +1,6 @@
 {{ $url := .Get "target" | default .Page.Params.externalURL }}
 {{ if $url }}
-  <script>window.location.href = '{{ $url }}';</script>
-  <meta http-equiv="refresh" content="0; url={{ $url }}">
-  <p>Redirecting to <a href="{{ $url }}">{{ $url }}</a>...</p>
+  <script>window.location.href = '{{ relURL $url }}';</script>
+  <meta http-equiv="refresh" content="0; url={{ relURL $url }}">
+  <p>Redirecting to <a href="{{ relURL $url }}">{{ $url }}</a>...</p>
 {{ end }}
