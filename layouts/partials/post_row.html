@@ -1,23 +1,23 @@
 <li>
-    {{ $url := .RelPermalink }}
-    {{ if .Params.externalURL }}
-        {{ $url = relURL .Params.externalURL }}
-    {{ end }}
+  {{ $url := .RelPermalink }}
+  {{ if .Params.externalURL }}
+  {{ $url = relURL .Params.externalURL }}
+  {{ end }}
 
-    {{ if not .CurrentSection.Params.nodate }}
-    <div style="display: grid; grid-template-columns: 7em auto">
-        <span class="date">{{ .Date.Format "2 Jan, 2006" }}</span>
-        {{ if .Params.bold }}
-        <a class="bold-post-in-list" href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
-        {{ else }}
-        <a href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
-        {{ end }}
-    </div>
-    {{ else }}
+  {{ if not .CurrentSection.Params.nodate }}
+  <div style="display: grid; grid-template-columns: 7em auto">
+    <span class="date">{{ .Date.Format "2 Jan, 2006" }}</span>
     {{ if .Params.bold }}
     <a class="bold-post-in-list" href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
     {{ else }}
     <a href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
     {{ end }}
-    {{ end }}
+  </div>
+  {{ else }}
+  {{ if .Params.bold }}
+  <a class="bold-post-in-list" href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
+  {{ else }}
+  <a href="{{ $url }}">{{ .Page.Title | markdownify }}</a>
+  {{ end }}
+  {{ end }}
 </li>
