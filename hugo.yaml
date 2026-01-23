@@ -13,8 +13,11 @@ deployment:
     - ".txt$"
     - ".js$"
     - ".css$"
-    - ".png$"
     - ".webp$"
+    - ".avif$"
+    - ".jpg$"
+    - ".jpeg$"
+    - ".png$"
 
 minify:
   disableHTML: false
@@ -24,7 +27,7 @@ minify:
 
 module:
   imports:
-    - path: github.com/omerakgoz34/hugo-dead-simple
+    - path: github.com/berklan/hugo-dead-simple
 
 menu:
   main:
@@ -53,13 +56,13 @@ markup:
       passthrough:
         delimiters:
           block:
-          - - \[
-            - \]
-          - - $$
-            - $$
+            - - \[
+              - \]
+            - - $$
+              - $$
           inline:
-          - - \(
-            - \)
+            - - \(
+              - \)
         enable: true
     renderer:
       unsafe: true
