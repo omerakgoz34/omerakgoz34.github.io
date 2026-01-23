@@ -27,7 +27,7 @@ minify:
 
 module:
   imports:
-    - path: github.com/berklan/hugo-dead-simple
+    - path: github.com/barklan/hugo-dead-simple
 
 menu:
   main:
