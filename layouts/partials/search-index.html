@@ -1,0 +1,29 @@
+<script>
+  window.store = {
+    {{ range.Site.Pages }}
+  "{{ .Permalink }}": {
+    "title": "{{ .Title  }}",
+      "tags": [{{ range .Params.Tags }} "{{ . }}", {{ end }}],
+  "content": {{ .Content | plainify }}, // Strip out HTML tags
+  "url": "{{ .Permalink }}"
+    },
+  {{ end }}
+}
+</script>
+
+{{ if not .Site.Params.noSearch }}
+{{ $lunr_js_url := "https://cdn.jsdelivr.net/npm/lunr@2.3/lunr.min.js" }}
+{{ with try (resources.GetRemote $lunr_js_url) -}}
+{{ with .Err -}}
+{{ errorf "Could not retrieve Lunr js file from CDN. Reason: %s." . -}}
+{{ else with.Value -}}
+{{ with resources.Copy "js/lunr.min.js" . }}
+{{ $js1 := . | fingerprint }}
+<script defer src="{{- .RelPermalink -}}" integrity="{{- $js1.Data.Integrity -}}" crossorigin="anonymous"></script>
+{{ end -}}
+{{ end -}}
+{{ end -}}
+
+{{ $js2 := resources.Get "js/search.js" | minify | fingerprint }}
+<script defer src="{{- $js2.RelPermalink -}}" integrity="{{- $js2.Data.Integrity -}}"></script>
+{{ end }}
