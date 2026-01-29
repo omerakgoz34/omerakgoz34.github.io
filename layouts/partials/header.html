@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ .Site.LanguageCode }}" xml:lang="{{ .Site.LanguageCode }}">
+<html lang="{{ .Site.LanguageCode }}">
 
 <head>
   <meta charset="utf-8" />
@@ -58,8 +58,8 @@
   (resources.Get "css/tables.css")
   (resources.Get "css/misc.css")
   | resources.Concat "style.css" | minify | fingerprint }}
-  <link rel="stylesheet" type="text/css" href="{{ $CSS.RelPermalink }}" integrity="{{- $CSS.Data.Integrity -}}"
-    blocking=render media=all>
+  <link defer rel="stylesheet" type="text/css" href="{{ $CSS.RelPermalink }}" integrity="{{- $CSS.Data.Integrity -}}"
+    blocking=render>
 
   {{ $noop := .WordCount }}
   {{ if .Page.Store.Get "hasMath" }}
@@ -71,7 +71,7 @@
   {{ else with.Value -}}
   {{ with resources.Copy (printf "css/katex%s.css" (cond hugo.IsProduction ".min" "")) . }}
   {{ $secureCSS := . | minify | resources.Fingerprint }}
-  <link rel="stylesheet" href="{{- .RelPermalink -}}" integrity="{{- $secureCSS.Data.Integrity -}}" blocking=render
+  <link defer rel="stylesheet" href="{{- .RelPermalink -}}" integrity="{{- $secureCSS.Data.Integrity -}}" blocking=render
     crossorigin="anonymous">
   {{ end -}}
   {{ end -}}
