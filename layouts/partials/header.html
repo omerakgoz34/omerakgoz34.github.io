@@ -57,13 +57,14 @@
   (resources.Get "css/code.css")
   (resources.Get "css/tables.css")
   (resources.Get "css/misc.css")
-  | resources.Concat "style.css" | minify | fingerprint }}
-  <link defer rel="stylesheet" type="text/css" href="{{ $CSS.RelPermalink }}" integrity="{{- $CSS.Data.Integrity -}}"
-    blocking=render>
+  | resources.Concat "styles.css" | minify }}
+  <style>
+    {{ $CSS.Content | safeCSS }}
+  </style>
 
   {{ $noop := .WordCount }}
   {{ if .Page.Store.Get "hasMath" }}
-  {{ $katex_css_url := printf "https://cdn.jsdelivr.net/npm/katex@latest/dist/katex%s.css" (cond hugo.IsProduction
+  {{ $katex_css_url := printf "https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" (cond hugo.IsProduction
   ".min" "") -}}
   {{ with try (resources.GetRemote $katex_css_url) -}}
   {{ with .Err -}}
