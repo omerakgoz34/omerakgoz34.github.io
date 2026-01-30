@@ -14,9 +14,9 @@ deployment:
     - ".js$"
     - ".css$"
     - ".webp$"
-    - ".avif$"
     - ".jpg$"
     - ".jpeg$"
+    - ".avif$"
     - ".png$"
 
 minify:
