@@ -8,7 +8,8 @@
   <link rel="icon" type="image/png" href='{{ relURL "favicon.png" }}'>
   <link rel="icon" type="image/png" sizes="32x32" href='{{ relURL " favicon-32x32.png" }}'>
   <link rel="icon" type="image/png" sizes="16x16" href='{{ relURL " favicon-16x16.png" }}'>
-  <link rel="manifest" href='{{ relURL " site.webmanifest" }}'>
+  <link rel="apple-touch-icon" sizes="180x180" href='{{ relURL "apple-touch-icon.png" }}'}>
+  <link rel="manifest" href='{{ relURL "site.webmanifest" }}'>
 
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1b" />
@@ -64,20 +65,9 @@
 
   {{ $noop := .WordCount }}
   {{ if .Page.Store.Get "hasMath" }}
-  {{ $katex_css_url := printf "https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css" (cond hugo.IsProduction
-  ".min" "") -}}
-  {{ with try (resources.GetRemote $katex_css_url) -}}
-  {{ with .Err -}}
-  {{ errorf "Could not retrieve KaTeX css file from CDN. Reason: %s." . -}}
-  {{ else with.Value -}}
-  {{ with resources.Copy (printf "css/katex%s.css" (cond hugo.IsProduction ".min" "")) . }}
-  {{ $secureCSS := . | minify | resources.Fingerprint }}
-  <link defer rel="stylesheet" href="{{- .RelPermalink -}}" integrity="{{- $secureCSS.Data.Integrity -}}" blocking=render
-    crossorigin="anonymous">
-  {{ end -}}
-  {{ end -}}
-  {{ end -}}
+  <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" integrity="sha256-OD57jUWjAD1sofhisySFSlSNp9YrSqtpEExE59EAIq8=" crossorigin="anonymous">
   {{ end }}
+
 
 </head>
 

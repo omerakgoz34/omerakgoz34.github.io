@@ -1,0 +1,14 @@
+<br>
+
+<footer>
+{{ with resources.Get "js/footer_scripts.js" }}
+    {{ with . | minify | fingerprint "sha256" }}
+      <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+    {{ end }}
+  {{ end }}
+
+{{ partial "search-index.html" . }}
+</footer>
+
+</body>
+</html>

@@ -1,18 +1,24 @@
 <script>
-  window.store = {
-    {{ range.Site.Pages }}
-  "{{ .Permalink }}": {
-    "title": "{{ .Title  }}",
-      "tags": [{{ range .Params.Tags }} "{{ . }}", {{ end }}],
-  "content": {{ .Content | plainify }}, // Strip out HTML tags
-  "url": "{{ .Permalink }}"
+window.store = {
+    {{ range .Site.Pages }}
+    "{{ .Permalink }}": {
+        "title": "{{ .Title  }}",
+        "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
+        "content": {{ .Content | plainify }}, // Strip out HTML tags
+        "url": "{{ .Permalink }}"
     },
-  {{ end }}
+    {{ end }}
 }
 </script>
 
 
-<script defer src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin="anonymous"></script>
+{{ if not .Site.Params.noSearch }}
 
-{{ $js2 := resources.Get "js/search.js" | minify | fingerprint }}
-<script defer src="{{- $js2.RelPermalink -}}" integrity="{{- $js2.Data.Integrity -}}"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin="anonymous"></script>
+  {{ with resources.Get "js/search.js" }}
+    {{ with . | minify | fingerprint "sha256" }}
+      <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+    {{ end }}
+  {{ end }}
+
+{{ end }}

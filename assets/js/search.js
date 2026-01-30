@@ -1,4 +1,4 @@
-function displayResults (results, store) {
+function displayResults(results, store) {
   const searchResults = document.getElementById('results')
   if (results.length) {
     let resultList = ''
@@ -48,4 +48,3 @@ if (query) {
   // Update the list with results
   displayResults(results, window.store)
 }
-
