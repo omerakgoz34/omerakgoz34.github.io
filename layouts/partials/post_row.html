@@ -1,7 +1,7 @@
 <li>
   {{ $url := .RelPermalink }}
-  {{ if .Params.externalURL }}
-  {{ $url = relURL .Params.externalURL }}
+  {{ if .Params.redirectURL }}
+  {{ $url = relURL .Params.redirectURL }}
   {{ end }}
 
   {{ if not .CurrentSection.Params.nodate }}
