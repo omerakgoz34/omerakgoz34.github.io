@@ -1,8 +1,5 @@
 <li>
   {{ $url := .RelPermalink }}
-  {{ if .Params.redirectURL }}
-  {{ $url = relURL .Params.redirectURL }}
-  {{ end }}
 
   {{ if not .CurrentSection.Params.nodate }}
   <div style="display: grid; grid-template-columns: 7em auto">

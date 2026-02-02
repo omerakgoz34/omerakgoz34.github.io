@@ -1,4 +1,4 @@
-<script>
+<script blocking="render">
 window.store = {
     {{ range .Site.Pages }}
     "{{ .Permalink }}": {
@@ -11,14 +11,11 @@ window.store = {
 }
 </script>
 
-
-{{ if not .Site.Params.noSearch }}
-
-  <script defer src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin="anonymous"></script>
-  {{ with resources.Get "js/search.js" }}
-    {{ with . | minify | fingerprint "sha256" }}
-      <script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
-    {{ end }}
+<script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin="anonymous" blocking="render" defer></script>
+{{ with resources.Get "js/search.js" }}
+  {{ with . | minify | fingerprint "sha256" }}
+    <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" blocking="render" defer></script>
   {{ end }}
-
 {{ end }}
+
+

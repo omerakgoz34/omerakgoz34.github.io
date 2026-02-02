@@ -1,11 +1,10 @@
 {{ $url := .Get "target" | default .Page.Params.redirectURL }}
 {{ if $url }}
 
-<!-- Fallback method if $redirectURL don't work -->
-<script>
-  window.location.href = '{{ relURL $url }}';
-</script>
 <meta http-equiv="refresh" content="0; url={{ relURL $url }}">
 <p>Redirecting to <a href="{{ relURL $url }}">{{ $url }}</a>...</p>
+<script blocking="render">
+  window.location.href = '{{ relURL $url }}';
+</script>
 
 {{ end }}

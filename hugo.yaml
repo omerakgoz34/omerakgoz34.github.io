@@ -6,6 +6,11 @@ enableGitInfo: false
 uglyURLs: false
 canonifyURLs: false
 
+params:
+  description: "my personal website"
+  noSearch: false
+  noExtraFunctions: true
+
 deployment:
   order:
     - ".html$"
@@ -40,10 +45,6 @@ menu:
     - name: "About"
       url: "/about"
       weight: 3
-
-params:
-  description: "my personal website"
-  noSearch: false
 
 markup:
   highlight:
