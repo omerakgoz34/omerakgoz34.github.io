@@ -3,7 +3,7 @@
 
 <meta http-equiv="refresh" content="0; url={{ relURL $url }}">
 <p>Redirecting to <a href="{{ relURL $url }}">{{ $url }}</a>...</p>
-<script blocking="render">
+<script>
   window.location.href = '{{ relURL $url }}';
 </script>
 
