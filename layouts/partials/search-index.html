@@ -11,9 +11,10 @@ window.store = {
 }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin=anonymous></script>
+<script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin=anonymous defer></script>
 
-{{ $js := resources.Get "js/search.js" | minify }}
-<script>
-  {{ $js.Content | safeJS }}
+{{ $js := resources.Get "js/search.js" | minify | fingerprint "sha256" }}
+<script src="{{ $js.RelPermalink }}"
+        integrity="{{ $js.Data.Integrity }}"
+        crossorigin=anonymous defer>
 </script>
