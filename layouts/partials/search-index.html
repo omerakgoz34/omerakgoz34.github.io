@@ -13,8 +13,9 @@ window.store = {
 
 <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin=anonymous defer></script>
 
-{{ $js := resources.Get "js/search.js" | minify | fingerprint "sha256" }}
-<script src="{{ $js.RelPermalink }}"
-        integrity="{{ $js.Data.Integrity }}"
-        crossorigin=anonymous defer>
+{{ $js := resources.Get "js/search.js" | minify }}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      {{ $js.Content | safeJS }}
+  });
 </script>
