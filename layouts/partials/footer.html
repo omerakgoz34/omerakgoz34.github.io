@@ -1,10 +1,9 @@
 <footer>
 {{ if not .Site.Params.noExtraFunctions }}
-  {{ with resources.Get "js/footer_scripts.js" }}
-    {{ with . | minify | fingerprint "sha256" }}
-      <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" blocking="render" defer></script>
-    {{ end }}
-  {{ end }}
+  {{ $js := resources.Get "js/footer_scripts.js" | minify }}
+  <script>
+    {{ $js.Content | safeJS }}
+  </script>
 {{ end }}
 
 
