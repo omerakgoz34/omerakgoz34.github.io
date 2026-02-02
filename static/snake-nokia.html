@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nokia-Style Snake Game</title>
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.17" crossorigin=anonymous blocking=render defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" crossorigin=anonymous blocking=render />
     <style>
         /* Classic Nokia LCD Colors */
         :root {
@@ -100,7 +100,7 @@
         const startButton = document.getElementById('startButton');
         const restartButton = document.getElementById('restartButton');
         const finalScoreEl = document.getElementById('finalScore');
-        
+
         // Game constants
         const gridSize = 20;
         let canvasSize;
@@ -133,9 +133,9 @@
                 draw();
             }
         }
-        
+
         window.addEventListener('resize', resizeCanvas);
-        
+
         function initializeGame() {
             highScoreEl.textContent = highScore;
             resizeCanvas();
@@ -192,7 +192,7 @@
                 ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
             });
         }
-        
+
         function drawFood() {
             ctx.fillStyle = foodColor;
             // Draw simple rectangle, no borders
@@ -210,7 +210,7 @@
                 case 'left': head.x -= 1; break;
                 case 'right': head.x += 1; break;
             }
-            
+
             snake.unshift(head);
 
             // Check for food collision
@@ -265,7 +265,7 @@
                 direction = 'right';
             }
         }
-        
+
         function didGameEnd() {
             // Check for collision with self
             for (let i = 1; i < snake.length; i++) {
