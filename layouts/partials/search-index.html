@@ -1,21 +1,21 @@
+{{ $scripts := slice (resources.Get "js/footer_scripts.js") }}
+
+{{ if not .Site.Params.noSearch }}
 <script>
-window.store = {
+  window.store = {
     {{ range .Site.Pages }}
     "{{ .Permalink }}": {
-        "title": "{{ .Title  }}",
-        "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
-        "content": {{ .Content | plainify }}, // Strip out HTML tags
-        "url": "{{ .Permalink }}"
+      "title": "{{ .Title  }}",
+      "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
+      "content": {{ .Content | plainify }}, // Strip out HTML tags
+      "url": "{{ .Permalink }}"
     },
     {{ end }}
-}
+  }
 </script>
+  {{ $scripts = $scripts | append (resources.Get "js/lunr_v2.3.9.min.js") }}
+  {{ $scripts = $scripts | append (resources.Get "js/search.js") }}
+{{ end }}
 
-<script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js" integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g=" crossorigin=anonymous defer></script>
-
-{{ $js := resources.Get "js/search.js" | minify }}
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      {{ $js.Content | safeJS }}
-  });
-</script>
+{{ $JS := $scripts | resources.Concat "js/scripts.js" | minify | fingerprint "sha256" }}
+<script type="text/javascript" src="{{ $JS.RelPermalink }}" integrity="{{ $JS.Data.Integrity }}" crossorigin=anonymous defer></script>

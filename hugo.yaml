@@ -9,7 +9,6 @@ canonifyURLs: false
 params:
   description: "my personal website"
   noSearch: false
-  noExtraFunctions: true
 
 deployment:
   order:

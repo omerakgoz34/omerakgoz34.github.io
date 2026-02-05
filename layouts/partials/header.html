@@ -90,14 +90,13 @@
   (resources.Get "css/code.css")
   (resources.Get "css/tables.css")
   (resources.Get "css/misc.css")
-  | resources.Concat "css/styles.css" | minify }}
-  <style>
-    {{ $CSS.Content | safeCSS }}
-  </style>
+  | resources.Concat "css/styles.css" | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" type="text/css" href="{{ $CSS.RelPermalink }}" integrity="{{ $CSS.Data.Integrity }}"
+    crossorigin=anonymous blocking=render />
 
   {{ $noop := .WordCount }}
   {{ if .Page.Store.Get "hasMath" }}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css"
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css"
     integrity="sha256-OD57jUWjAD1sofhisySFSlSNp9YrSqtpEExE59EAIq8=" crossorigin=anonymous blocking=render />
   {{ end }}
 </head>

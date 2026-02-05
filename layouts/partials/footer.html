@@ -1,16 +1,7 @@
 <footer>
-{{ if not .Site.Params.noExtraFunctions }}
-  {{ $js := resources.Get "js/footer_scripts.js" | minify }}
-  <script>
-    {{ $js.Content | safeJS }}
-  </script>
-{{ end }}
-
-
-{{ if not .Site.Params.noSearch }}
   {{ partial "search-index.html" . }}
-{{ end }}
 </footer>
 
 </body>
+
 </html>
