@@ -13,9 +13,9 @@
     {{ end }}
   }
 </script>
-  {{ $scripts = $scripts | append (resources.Get "js/lunr_v2.3.9.min.js") }}
+  {{ $scripts = $scripts | append (resources.Get "js/lunr_v2.3.9.js") }}
   {{ $scripts = $scripts | append (resources.Get "js/search.js") }}
 {{ end }}
 
-{{ $JS := $scripts | resources.Concat "js/scripts.js" | minify | fingerprint "sha256" }}
+{{ $JS := $scripts | resources.Concat "js/bundle.js" | minify | fingerprint "sha256" }}
 <script type="text/javascript" src="{{ $JS.RelPermalink }}" integrity="{{ $JS.Data.Integrity }}" crossorigin=anonymous defer></script>
