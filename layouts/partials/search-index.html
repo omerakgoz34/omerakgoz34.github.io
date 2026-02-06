@@ -1,4 +1,9 @@
-{{ $scripts := slice (resources.Get "js/footer_scripts.js") }}
+{{ $scripts := slice (resources.Get "js/index.js") }}
+
+
+{{ if not .Site.Params.noExtraJS }}
+  {{ $scripts = $scripts | append (resources.Get "js/footer_scripts.js") }}
+{{ end }}
 
 {{ if not .Site.Params.noSearch }}
 <script>
