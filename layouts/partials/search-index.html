@@ -23,4 +23,4 @@
 {{ end }}
 
 {{ $JS := $scripts | resources.Concat "js/bundle.js" | minify | fingerprint "sha256" }}
-<script type="text/javascript" src="{{ $JS.RelPermalink }}" integrity="{{ $JS.Data.Integrity }}" crossorigin=anonymous defer></script>
+<script src="{{ $JS.RelPermalink }}" integrity="{{ $JS.Data.Integrity }}" crossorigin=anonymous defer></script>
