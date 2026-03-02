@@ -17,7 +17,7 @@
         body { margin: 0; overflow: hidden; background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
         #canvas-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
         #ui-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem; }
-        .glass-panel { background: rgba(10, 15, 25, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; pointer-events: auto; }
+        .glass-panel { background: rgba(10, 15, 25, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; pointer-events: auto; }
         .data-value { font-family: 'Courier New', Courier, monospace; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
         
         /* Custom Scrollbar for potential small screens */
@@ -133,9 +133,9 @@
         camera.position.set(0, 0, 15);
 
         // Renderer
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false }); // Disabled antialiasing for perf
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25)); // Lowered pixel ratio ceiling
         container.appendChild(renderer.domElement);
 
         // Controls
@@ -158,47 +158,6 @@
         const sunLight = new THREE.DirectionalLight(0xfff7e6, 1.8);
         scene.add(sunLight);
 
-        // Starfield Background
-        function createStarfield() {
-            const starsGeometry = new THREE.BufferGeometry();
-            const count = 1500;
-            const positions = new Float32Array(count * 3);
-            const colors = new Float32Array(count * 3);
-            const color = new THREE.Color();
-
-            for(let i = 0; i < count; i++) {
-                // Generate points on a large sphere
-                const r = 100 + Math.random() * 100;
-                const theta = 2 * Math.PI * Math.random();
-                const phi = Math.acos(2 * Math.random() - 1);
-                
-                positions[i*3] = r * Math.sin(phi) * Math.cos(theta);
-                positions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-                positions[i*3+2] = r * Math.cos(phi);
-
-                // Add slight color variation to stars
-                color.setHSL(Math.random() * 0.2 + 0.5, 0.8, Math.random() * 0.5 + 0.5);
-                colors[i*3] = color.r;
-                colors[i*3+1] = color.g;
-                colors[i*3+2] = color.b;
-            }
-
-            starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            starsGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-            
-            const starsMaterial = new THREE.PointsMaterial({
-                size: 0.1,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.8,
-                sizeAttenuation: true
-            });
-
-            const starField = new THREE.Points(starsGeometry, starsMaterial);
-            scene.add(starField);
-        }
-        createStarfield();
-
         // --- EARTH ---
         const earthGroup = new THREE.Group();
         scene.add(earthGroup);
@@ -206,15 +165,13 @@
         // Rotate Earth group to align coordinate system properly mapping Prime Meridian
         earthGroup.rotation.y = -Math.PI / 2;
 
-        const earthGeometry = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+        const earthGeometry = new THREE.SphereGeometry(EARTH_RADIUS, 32, 32); // Reduced segments from 64 to 32
         
         // High-res texture loading with robust fallback
         const textureLoader = new THREE.TextureLoader();
-        const textureUrl = 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+        const textureUrl = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg'; // Swapped to a lighter 2K texture
         
-        const earthMaterial = new THREE.MeshStandardMaterial({
-            roughness: 0.8,
-            metalness: 0.1,
+        const earthMaterial = new THREE.MeshLambertMaterial({ // Swapped to Lambert (cheapest lit material)
             color: 0x223344 // Fallback color while loading or if it fails
         });
         const earth = new THREE.Mesh(earthGeometry, earthMaterial);
@@ -223,7 +180,7 @@
         textureLoader.load(
             textureUrl,
             function (texture) {
-                texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 4); // Limit anisotropy
                 earthMaterial.map = texture;
                 earthMaterial.color.setHex(0xffffff); // Reset fallback color
                 earthMaterial.needsUpdate = true;
@@ -235,46 +192,14 @@
             }
         );
 
-        // Premium Atmosphere (Custom Shader for Fresnel effect)
-        const atmosphereGeometry = new THREE.SphereGeometry(EARTH_RADIUS * 1.02, 64, 64);
-        const atmosphereMaterial = new THREE.ShaderMaterial({
-            vertexShader: `
-                varying vec3 vNormal;
-                void main() {
-                    vNormal = normalize(normalMatrix * normal);
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `,
-            fragmentShader: `
-                varying vec3 vNormal;
-                void main() {
-                    float intensity = pow(0.6 - dot(vNormal, vec3(0, 0, 1.0)), 3.0);
-                    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0) * intensity * 1.5;
-                }
-            `,
-            blending: THREE.AdditiveBlending,
-            side: THREE.BackSide,
-            transparent: true
-        });
-        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-        scene.add(atmosphere);
-
         // --- ISS BEACON ---
         const issGroup = new THREE.Group();
         scene.add(issGroup);
 
         // Glassmorphic core
-        const issGeometry = new THREE.SphereGeometry(0.08, 16, 16);
-        const issMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x38bdf8,
-            transmission: 0.9,
-            opacity: 1,
-            metalness: 0,
-            roughness: 0.1,
-            ior: 1.5,
-            thickness: 0.5,
-            emissive: 0x0ea5e9,
-            emissiveIntensity: 0.5
+        const issGeometry = new THREE.SphereGeometry(0.08, 12, 12); // Reduced segments
+        const issMaterial = new THREE.MeshBasicMaterial({ // Swapped from Physical to Basic (huge GPU savings)
+            color: 0x38bdf8
         });
         const issMesh = new THREE.Mesh(issGeometry, issMaterial);
         issGroup.add(issMesh);
@@ -397,15 +322,21 @@
                 }
 
                 // Interpolate using Anime.js
+                let lastUIUpdate = 0;
                 anime({
                     targets: state.iss,
                     lat: state.targetIss.lat,
                     lon: state.targetIss.lon,
                     altitude: state.targetIss.altitude,
                     velocity: state.targetIss.velocity,
-                    duration: 5000, // 5 seconds to match polling
-                    easing: 'linear',
+                    duration: 3000, // Animate for 3 seconds
+                    easing: 'easeInOutQuad', // Smooth start and stop
                     update: function() {
+                        // Throttle DOM updates to ~30fps to balance smoothness and CPU usage
+                        const now = Date.now();
+                        if (now - lastUIUpdate < 33) return;
+                        lastUIUpdate = now;
+
                         // Update UI Numbers
                         let displayLon = state.iss.lon;
                         // Normalize longitude for display
@@ -415,6 +346,17 @@
                         ui.lat.innerText = `${state.iss.lat > 0 ? '+' : ''}${state.iss.lat.toFixed(4)}°`;
                         ui.lon.innerText = `${displayLon > 0 ? '+' : ''}${displayLon.toFixed(4)}°`;
                         
+                        ui.vel.innerText = Math.round(state.iss.velocity).toLocaleString();
+                        ui.alt.innerText = Math.round(state.iss.altitude).toLocaleString();
+                    },
+                    complete: function() {
+                        // Ensure the exact final values are set on the UI when the transition finishes
+                        let displayLon = state.iss.lon;
+                        while(displayLon > 180) displayLon -= 360;
+                        while(displayLon < -180) displayLon += 360;
+
+                        ui.lat.innerText = `${state.iss.lat > 0 ? '+' : ''}${state.iss.lat.toFixed(4)}°`;
+                        ui.lon.innerText = `${displayLon > 0 ? '+' : ''}${displayLon.toFixed(4)}°`;
                         ui.vel.innerText = Math.round(state.iss.velocity).toLocaleString();
                         ui.alt.innerText = Math.round(state.iss.altitude).toLocaleString();
                     }
@@ -482,7 +424,7 @@
 
         // Initial fetch and start loop
         fetchISSData();
-        setInterval(fetchISSData, 5000); // Poll every 5 seconds
+        setInterval(fetchISSData, 10000); // Poll every 10 seconds
 
         // Start render loop
         animate();
