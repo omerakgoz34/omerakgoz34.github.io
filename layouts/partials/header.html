@@ -47,6 +47,19 @@
     body {
       background-color: var(--background);
     }
+
+    body {
+      /* This adds padding only at the top of the screen */
+      padding-top: env(safe-area-inset-top);
+      
+      /* Optional: handle bottom "home bar" on iOS/Android */
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .container {
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
   </style>
 
   {{ $styles := slice
