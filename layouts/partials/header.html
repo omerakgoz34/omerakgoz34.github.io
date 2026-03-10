@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
+  <!-- UI fix for mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
   <!-- Favicons -->
@@ -48,17 +49,10 @@
       background-color: var(--background);
     }
 
+    /* UI fix for mobile */
     body {
-      /* This adds padding only at the top of the screen */
       padding-top: env(safe-area-inset-top);
-      
-      /* Optional: handle bottom "home bar" on iOS/Android */
       padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .container {
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
     }
   </style>
 
