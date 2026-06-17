@@ -7,7 +7,7 @@ uglyURLs: false
 canonifyURLs: false
 
 params:
-  description: "my personal website"
+  description: "omerakgoz34's personal website"
   noSearch: false
   noExtraJS: true
 
@@ -68,10 +68,19 @@ markup:
     renderer:
       unsafe: true
 
+
+outputFormats:
+  llms:
+    baseName: llms
+    isPlainText: true
+    mediaType: text/plain
+    root: true
+
 outputs:
   home:
     - html
     - rss
     - json
+    - llms
   page:
     - html

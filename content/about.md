@@ -4,7 +4,7 @@ weight: 3
 nodate: true
 ---
 
-This will be my personal blog website.
+Hi, I'm omerakgoz34. This is my personal blog website.
 <br />
 <br />
-Website is still under construction tho...
+but, it's still under construction tho...
