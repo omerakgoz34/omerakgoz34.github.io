@@ -84,3 +84,7 @@ outputs:
     - llms
   page:
     - html
+
+security:
+  allowContent:
+    - text/html
