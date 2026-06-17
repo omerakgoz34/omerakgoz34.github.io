@@ -87,4 +87,5 @@ outputs:
 
 security:
   allowContent:
+    - text/markdown
     - text/html
