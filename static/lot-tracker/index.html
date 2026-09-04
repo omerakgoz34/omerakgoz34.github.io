@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0c0d0f" />
+    <title>LOT Tracker</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      try {
+        var t = localStorage.getItem("lotkeep.theme");
+        var d = t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        if (d) document.documentElement.classList.add("dark");
+        var lang = localStorage.getItem("lotkeep.lang");
+        if (lang !== "en" && lang !== "tr" && lang !== "de") {
+          var nav = (navigator.language || "en").toLowerCase();
+          lang = nav.indexOf("tr") === 0 ? "tr" : nav.indexOf("de") === 0 ? "de" : "en";
+        }
+        document.documentElement.lang = lang;
+        var names = { en: "LOT Tracker", tr: "LOT Takibi", de: "LOT-Tracker" };
+        document.title = names[lang] || names.en;
+        window.__lkLang = lang;
+        window.__lkName = names[lang] || names.en;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" class="boot-logo">
+          <rect x="3.5" y="8.5" width="19" height="16" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M3.5 14.5h19" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M13 8.5v16" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+          <rect x="17.5" y="5.5" width="11" height="9" rx="1.5" fill="currentColor"/>
+          <path d="M20 10h6M20 12.2h4" stroke="var(--accent-fg)" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <p class="boot-title" id="boot-title">LOT Tracker</p>
+        <div class="boot-spin" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+    <script>
+      (function () {
+        var el = document.getElementById("boot-title");
+        if (el && window.__lkName) el.textContent = window.__lkName;
+      })();
+    </script>
+    <script src="./app.js"></script>
+  </body>
+</html>
