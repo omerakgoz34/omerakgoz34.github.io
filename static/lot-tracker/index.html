@@ -1,72 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0c0d0f" />
-    <meta name="description" content="Track warehouse products, reference numbers, and LOT changes." />
+    <meta name="theme-color" content="#e8f1fb" />
+    <meta name="description" content="Track warehouse products, Artikel numbers, and LOT changes. Open the files directly — no install, no build." />
     <title>LOT Tracker</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./pico.blue.min.css" />
     <link rel="stylesheet" href="./styles.css" />
-    <style>
-      html, body { margin: 0; min-height: 100%; background: #f3f1ec; color: #1c1e22; }
-      html.dark, html.dark body { background: #0c0d0f; color: #ece8e1; }
-      .boot {
-        min-height: 100dvh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        padding: 1.5rem;
-        text-align: center;
-        font-family: "Segoe UI", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
-      }
-      .boot svg { width: 3rem; height: 3rem; }
-      .boot p { margin: 0; max-width: 24rem; font-size: 0.875rem; opacity: 0.72; }
-      .boot-spin {
-        width: 1.5rem;
-        height: 1.5rem;
-        border: 2px solid color-mix(in srgb, currentColor 18%, transparent);
-        border-top-color: #3f5f6b;
-        border-radius: 999px;
-        animation: boot-spin 0.7s linear infinite;
-      }
-      html.dark .boot-spin { border-top-color: #8aa4b0; }
-      @keyframes boot-spin { to { transform: rotate(360deg); } }
-    </style>
     <script>
       try {
         var t = localStorage.getItem("lotkeep.theme");
-        var d = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (d) document.documentElement.classList.add("dark");
+        var d = t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", d ? "dark" : "light");
         document.documentElement.style.colorScheme = d ? "dark" : "light";
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeMeta) themeMeta.setAttribute("content", d ? "#071422" : "#e8f1fb");
         var l = localStorage.getItem("lotkeep.lang");
         if (l !== "en" && l !== "tr" && l !== "de") {
           var n = (navigator.language || "").toLowerCase();
           l = n.indexOf("tr") === 0 ? "tr" : n.indexOf("de") === 0 ? "de" : "en";
         }
         document.documentElement.lang = l;
-        var names = { en: "LOT Tracker", tr: "LOT Takibi", de: "LOT-Tracker" };
-        document.title = names[l] || names.en;
+        document.title = { en: "LOT Tracker", tr: "LOT Takibi", de: "LOT-Tracker" }[l] || "LOT Tracker";
         window.__lkLang = l;
+        window.__lkTheme = d ? "dark" : "light";
       } catch (e) {}
     </script>
   </head>
-  <body class="antialiased">
-    <div id="root">
-      <main class="boot" role="status" aria-live="polite" aria-busy="true">
-        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <rect x="3.5" y="8.5" width="19" height="16" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M3.5 14.5h19" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M13 8.5v16" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
-          <rect x="17.5" y="5.5" width="11" height="9" rx="1.5" fill="currentColor"/>
-          <path d="M20 10h6M20 12.2h4" stroke="#f7f4ef" stroke-width="1.3" stroke-linecap="round"/>
-        </svg>
-        <p id="boot-msg">Loading the database, please wait...</p>
-        <div class="boot-spin" aria-hidden="true"></div>
-      </main>
+  <body>
+    <div id="boot" class="boot" role="status" aria-live="polite" aria-busy="true">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.5" y="8.5" width="19" height="16" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M3.5 14.5h19" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M13 8.5v16" stroke="currentColor" stroke-width="1.2" opacity="0.7"/>
+        <rect x="17.5" y="5.5" width="11" height="9" rx="1.5" fill="currentColor"/>
+        <path d="M20 10h6M20 12.2h4" stroke="#eef5fc" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <p id="boot-msg">Loading the database, please wait...</p>
+      <div class="boot-spin" aria-hidden="true"></div>
     </div>
+
+    <div id="app" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <input id="import-file" class="sr-file" type="file" accept=".json,application/json,text/json,text/plain" />
+    <input id="photo-file" class="sr-file" type="file" accept="image/*" />
+
+    <noscript>
+      <main class="wrap">
+        <h1>LOT Tracker</h1>
+        <p>Turn on JavaScript to track products, Artikel numbers, and LOT changes.</p>
+      </main>
+    </noscript>
+
     <script>
       (function () {
         var l = window.__lkLang || "en";
@@ -80,5 +68,6 @@
       })();
     </script>
     <script src="./app.js"></script>
+    <script src="https://grok.com/grok-app-builder/extensions.js"></script>
   </body>
 </html>
