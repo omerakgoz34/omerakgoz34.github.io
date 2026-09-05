@@ -55,16 +55,16 @@ markup:
   goldmark:
     extensions:
       passthrough:
+        enable: true
         delimiters:
           block:
-            - - \[
-              - \]
-            - - $$
-              - $$
+            - - '\['
+              - '\]'
+            - - '$$'
+              - '$$'
           inline:
-            - - \(
-              - \)
-        enable: true
+            - - '\('
+              - '\)'
     renderer:
       unsafe: true
 
