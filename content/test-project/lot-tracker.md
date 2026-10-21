@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Depot LOT Tracker App"
 date: "2026-09-18"
 redirectURL: "lot-tracker/"
