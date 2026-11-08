@@ -3,7 +3,7 @@ title: "Check Your Web Engine"
 date: 2026-04-01T11:02:05+03:00
 draft: false
 tags:
-- tools
+- tool
 aliases:
 - "/check-your-web-engine"
 - "/engine"
