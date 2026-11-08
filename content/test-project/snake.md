@@ -1,7 +1,7 @@
 ---
 title: "snake"
 date: "2025-12-31"
-redirectURL: "snake.html"
+redirectURL: "/snake.html"
 tags:
 - test
 - game

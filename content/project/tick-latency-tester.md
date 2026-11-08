@@ -1,7 +1,7 @@
 ---
 title: "Tick Latency Tester"
 date: "2026-10-21"
-redirectURL: "tick-latency-tester/"
+redirectURL: "/tick-latency-tester/"
 tags:
 - project
 - app

@@ -1,7 +1,7 @@
 ---
 title: "gemini-iss-tracker"
 date: "2026-02-25"
-redirectURL: "iss-tracker.html"
+redirectURL: "/iss-tracker.html"
 tags:
 - test
 - tool
